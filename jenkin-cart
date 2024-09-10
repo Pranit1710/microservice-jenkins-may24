@@ -3,7 +3,6 @@ pipeline {
 
     tools{
         nodejs "node"
-        Default "git"
     }
 
     stages {
