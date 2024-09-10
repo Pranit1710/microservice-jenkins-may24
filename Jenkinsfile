@@ -14,13 +14,20 @@ pipeline {
         
         stage('Install dependencies') {
             steps {
-               sh 'npm install'
+               sh 'sudo apt install npm'
+               sh 'npm test'
             }
         }
         
         stage('Build') {
             steps {
                 sh 'node index.js'
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                sh 'docker build -t node-cart .'
             }
         }
     }
