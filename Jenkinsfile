@@ -23,4 +23,5 @@ pipeline {
                 sh 'node index.js'
             }
         }
+    }
 }
