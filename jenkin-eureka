@@ -13,8 +13,7 @@ pipeline {
         }
         stage('Install dependencies') {
             steps {
-               sh 'sudo apt install npm'
-               sh 'npm test'
+               sh 'mvn clean install'
             }
         }
         stage('Build') {
