@@ -11,7 +11,12 @@ pipeline {
                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '530aad2c-250b-4f94-b53f-42bc4b74c93c', url: 'https://github.com/Pranit1710/simple-java-maven-app-may-24.git']])
             }
         }
-
+        stage('Install dependencies') {
+            steps {
+               sh 'sudo apt install npm'
+               sh 'npm test'
+            }
+        }
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
