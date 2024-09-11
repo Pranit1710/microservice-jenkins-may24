@@ -1,12 +1,15 @@
 pipeline {
+    
     agent any
 
     tools{
         nodejs "NODEJS"
     }
-     environment{
+    
+    environment{
         DOCKER_USER='pranitdockerhub'
     }
+    
     stages {
         stage('Git Checkout') {
             steps {
@@ -20,7 +23,7 @@ pipeline {
                { 
                  sh 'npm install'
                }
-             }
+            }
         }
 
         stage('Build Docker Image') {
@@ -31,19 +34,31 @@ pipeline {
         
         stage('DockerHub login & Image push to dockerhub') {
             steps {
-             withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
-              sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-              sh 'docker tag java pranitdockerhub/cicd:latest'
-              sh 'docker push pranitdockerhub/cicd:latest'
-              sh 'docker logout'
-              }
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+                    sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
+                    sh 'docker tag java pranitdockerhub/cicd:latest'
+                    sh 'docker push pranitdockerhub/cicd:latest'
+                    sh 'docker logout'
+                }
             }
         }
 
-         stage('Deployment') {
+        stage('Deployment') {
             steps {
                 sh 'docker run -itd --name cart-container pranitdockerhub/cicd:latest /bin/bash'
             }
         }
+
+        post { 
+            failure { 
+                echo 'Failure !'
+                mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
+            }
+
+            success { 
+                echo ' success!'
+            }
+        }
+
     }
 }
