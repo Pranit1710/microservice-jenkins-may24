@@ -1,21 +1,7 @@
-#FROM node:latest
-#WORKDIR /app
-#COPY . .
-#RUN npm install
-#EXPOSE 1004
-#CMD [ "node", "index.js" ]
-
-# Stage 1:
-FROM node:14 as builder
+FROM node:latest
 WORKDIR /app
-COPY package*.json ./ 
+COPY . .
 RUN npm install
-COPY . .   
-RUN npm run build
- 
-# Stage 2:
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
-# COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 1004
+CMD [ "node", "index.js" ]
+
