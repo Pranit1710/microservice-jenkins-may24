@@ -24,7 +24,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/') 
+                dir('/var/lib/jenkins/.npm/_logs/2024-09-11T09_47_17_355Z-debug.log') 
                 {
                 sh 'npm test'
                 }
