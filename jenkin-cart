@@ -12,30 +12,16 @@ pipeline {
             }
         }
 
-    stage('Check Working Directory') {
-            steps {
-                // Check the current directory and list its contents
-                sh 'pwd'
-                sh 'ls -la'
-            }
-        }
-
-         
-        stage('Verify package.json') {
-            steps {
-                // Check if package.json exists in the workspace
-                sh 'ls -l package.json'
-            }
-        }
-
         stage('Build') {
             steps {
-                 sh '''
-                npm cache clean --force
-                rm -rf node_modules
-                npm install
-                node index.js
+              dir(/var/lib/jenkins/workspace/Cart-Microservice)
+               { sh '''
+                 npm cache clean --force
+                 rm -rf node_modules
+                 npm install
+                 node index.js
                 '''
+               }
 
             }
         }
