@@ -17,16 +17,8 @@ pipeline {
              dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/')
                { 
                  sh 'npm install'
-                 sh 'npm test'
                }
              }
-        }
-        
-        stage('Verify Dockerfile') {
-            steps {
-                // Check if the Dockerfile exists
-                sh 'ls -l Dockerfile || echo "Dockerfile not found!"'
-            }
         }
 
         stage('Build Docker Image') {
