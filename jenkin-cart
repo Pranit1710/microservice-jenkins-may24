@@ -21,10 +21,10 @@ pipeline {
 
              }
         }
-
+        
         stage('Test') {
             steps {
-                sh 'npn test'
+                sh 'npm test'
             }
         }
 
