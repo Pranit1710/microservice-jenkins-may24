@@ -22,6 +22,12 @@ pipeline {
              }
         }
 
+        stage('Test') {
+            steps {
+                sh 'NODEJS test'
+            }
+        }
+
         stage('Verify Dockerfile') {
             steps {
                 // Check if the Dockerfile exists
