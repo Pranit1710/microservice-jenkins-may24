@@ -17,15 +17,13 @@ pipeline {
              dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/')
                { 
                  sh 'npm install'
+                 sh 'npm test'
                }
-
              }
         }
         
         stage('Test') {
-            steps {
-                sh 'npm test'
-            }
+            
         }
 
         stage('Verify Dockerfile') {
