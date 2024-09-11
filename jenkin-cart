@@ -4,7 +4,9 @@ pipeline {
     tools{
         nodejs "NODEJS"
     }
-
+     environment{
+        DOCKER_USER='pranitdockerhub'
+    }
     stages {
         stage('Git Checkout') {
             steps {
@@ -23,7 +25,24 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t nodecart cart-microservice-nodejs/'
+                sh 'docker build -t cart-image cart-microservice-nodejs/'
+            }
+        }
+        
+        stage('DockerHub login & Image push to dockerhub') {
+            steps {
+             withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+              sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
+              sh 'docker tag node pranitdockerhub/cicd:node-image'
+              sh 'docker push pranitdockerhub/cicd:node-image'
+              sh 'docker logout'
+              }
+            }
+        }
+
+         stage('Deployment') {
+            steps {
+                sh 'docker run -itd --name cart-container pranitdockerhub/cicd:latest /bin/bash'
             }
         }
     }
