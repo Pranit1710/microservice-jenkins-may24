@@ -14,17 +14,17 @@ pipeline {
 
         stage('Build') {
             steps {
-            // dir('/var/lib/jenkins/workspace/Cart-Microservice')
-            //   { 
-                 sh'npm install'
+             dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/')
+               { 
+                 sh 'npm install'
                }
 
-            // }
+             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t node-cart .'
+                sh 'docker build -t nodecart .'
             }
         }
     }
