@@ -28,6 +28,11 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
+            post { 
+                always { 
+                    junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
+                }
+            }
         }
 
         stage('Build Docker Image') {
@@ -61,6 +66,7 @@ pipeline {
         }
         success { 
             echo ' success!'
+            archiveArtifacts artifacts: '**/target/*.jar', onlyIfSuccessful: true
         }
     }
 
