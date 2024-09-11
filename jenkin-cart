@@ -15,11 +15,11 @@ pipeline {
         stage('Build') {
             steps {
             // dir('/var/lib/jenkins/workspace/Cart-Microservice')
-               { 
+            //   { 
                  sh'npm install'
                }
 
-            }
+            // }
         }
 
         stage('Build Docker Image') {
