@@ -24,10 +24,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                dir('/var/lib/jenkins/.npm/') 
-                {
                 sh 'npm test'
-                }
             }
         }
 
