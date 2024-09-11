@@ -4,6 +4,9 @@ pipeline {
     tools{
         maven "mvn"
     }
+     environment{
+        DOCKER_USER='pranitdockerhub'
+    }
 
     stages {
         stage('Git Checkout') {
