@@ -15,12 +15,8 @@ pipeline {
         stage('Build') {
             steps {
               dir('/var/lib/jenkins/workspace/Cart-Microservice')
-               { sh '''
-                 npm cache clean --force
-                 rm -rf node_modules
-                 npm install
-                 node index.js
-                '''
+               { 
+                 sh'npm install'
                }
 
             }
