@@ -36,7 +36,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
                     sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-                    sh 'docker tag java pranitdockerhub/cicd:latest'
+                  //  sh 'docker tag java pranitdockerhub/cicd:latest'
                     sh 'docker push pranitdockerhub/cicd:latest'
                     sh 'docker logout'
                 }
