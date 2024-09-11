@@ -33,8 +33,8 @@ pipeline {
             steps {
              withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
               sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-              sh 'docker tag node pranitdockerhub/cicd:node-image'
-              sh 'docker push pranitdockerhub/cicd:node-image'
+              sh 'docker tag node pranitdockerhub/cicd:latest'
+              sh 'docker push pranitdockerhub/cicd:latest'
               sh 'docker logout'
               }
             }
