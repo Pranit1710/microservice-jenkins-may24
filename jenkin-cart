@@ -12,9 +12,20 @@ pipeline {
             }
         }
         
-        stage('Install dependencies') {
+        stage('Install Node.js and dependencies') {
             steps {
-               sh 'sudo apt install npm'
+               // Install Node.js from NodeSource
+               sh '''
+               curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+               sudo apt-get install -y nodejs
+               '''
+               // Install npm packages
+               sh 'npm install'
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
                sh 'npm test'
             }
         }
@@ -25,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t node-cart .'
             }
