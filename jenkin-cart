@@ -24,7 +24,10 @@ pipeline {
         
         stage('Test') {
             steps {
+                dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/') 
+                {
                 sh 'npm test'
+                }
             }
         }
 
