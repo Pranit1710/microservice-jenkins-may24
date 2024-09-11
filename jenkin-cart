@@ -49,16 +49,17 @@ pipeline {
             }
         }
 
-        post { 
-            failure { 
-                echo 'Failure !'
-                mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
-            }
+    }   
 
-            success { 
-                echo ' success!'
-            }
+    post { 
+
+        failure { 
+            echo 'Failure !'
+            mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
         }
-
+        success { 
+            echo ' success!'
+        }
     }
+    
 }
