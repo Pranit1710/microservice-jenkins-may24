@@ -35,18 +35,12 @@ pipeline {
                 sh 'docker build -t eureka .'
             }
         } 
-
-        stage('Build Docker container') {
-            steps {
-                sh 'docker build -t eureka .'
-            }
-        } 
         
         stage('DockerHub login & Image push to dockerhub') {
             steps {
              withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
               sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-              sh 'docker tag java pranitdockerhub/cicd:latest'
+              sh 'docker tag cart-image pranitdockerhub/cicd:latest'
               sh 'docker push pranitdockerhub/cicd:latest'
               sh 'docker logout'
               }
@@ -55,14 +49,19 @@ pipeline {
         }
         stage('Deployment') {
             steps {
-            // for realtime envirnoment
-            //  withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]){}
-            //     sh 'docker login -u pranitdockerhub -p $docker_hub' }
-                sh 'docker run -itd --name discovery-cont pranitdockerhub/cicd:latest /bin/bash'
-            //  sh 'docker logout'
+               sh 'docker run -itd --name eureka-container pranitdockerhub/cicd:latest /bin/bash'
             }
         }
+    } 
+    post { 
 
-        
-    }  
+        failure { 
+            echo 'Failure !'
+            mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
+        }
+        success { 
+            echo ' success!'
+        }
+    }
+
 }
