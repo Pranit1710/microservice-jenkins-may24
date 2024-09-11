@@ -29,8 +29,37 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t java .'
+                sh 'docker build -t eureka .'
             }
-        }  
+        } 
+
+        stage('Build Docker container') {
+            steps {
+                sh 'docker build -t eureka .'
+            }
+        } 
+        
+        stage('DockerHub login & Image push to dockerhub') {
+            steps {
+             withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+              sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
+              sh 'docker tag java pranitdockerhub/cicd:latest'
+              sh 'docker push pranitdockerhub/cicd:latest'
+              sh 'docker logout'
+              }
+
+            }
+        }
+        stage('Deployment') {
+            steps {
+            // for realtime envirnoment
+            //  withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]){}
+            //     sh 'docker login -u pranitdockerhub -p $docker_hub' }
+                sh 'docker run -itd --name discovery-cont pranitdockerhub/cicd:latest /bin/bash'
+            //  sh 'docker logout'
+            }
+        }
+
+        
     }  
 }
