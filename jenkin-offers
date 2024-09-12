@@ -1,1 +1,75 @@
 
+pipeline {
+    agent any
+
+    tools{
+        maven "mvn"
+    }
+     environment{
+        DOCKER_USER='pranitdockerhub'
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '530aad2c-250b-4f94-b53f-42bc4b74c93c', url: 'https://github.com/Pranit1710/simple-java-maven-app-may-24.git']])
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+               sh 'mvn clean install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post { 
+                always { 
+                    junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t offers-image .'
+            }
+        } 
+        
+        stage('DockerHub login & Image push to dockerhub') {
+            steps {
+             withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+              sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
+              sh 'docker tag cart-image pranitdockerhub/cicd:latest'
+              sh 'docker push pranitdockerhub/cicd:latest'
+              sh 'docker logout'
+              }
+
+            }
+        }
+        stage('Deployment') {
+            steps {
+               sh 'docker run -itd --name offers-container pranitdockerhub/cicd:latest /bin/bash'
+            }
+        }
+    } 
+    post { 
+
+        failure { 
+            echo 'Failure !'
+            mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
+        }
+        success { 
+            echo ' success!'
+            archiveArtifacts artifacts: '**/target/*.jar', onlyIfSuccessful: true
+        }
+    }
+
+}
+
