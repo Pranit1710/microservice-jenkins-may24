@@ -19,7 +19,7 @@ pipeline {
 
         stage('Install Python and Flask'){
             steps {
-                   dir('/var/lib/jenkins/workspace/wishlist-microservice/wishlist-microservice-python/')
+                   dir('/var/lib/jenkins/workspace/wishlist-microservice/wishlist-microservice-python')
                     {
                         sh '''
                         python3 -m venv venv
@@ -31,7 +31,10 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                    sh 'docker build -t wishlist-image .'    
+                    dir('/var/lib/jenkins/workspace/wishlist-microservice/wishlist-microservice-python')
+                    {
+                        sh 'docker build -t wishlist-image .'
+                    }
             }
         }
         
