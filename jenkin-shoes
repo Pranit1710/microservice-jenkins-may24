@@ -46,8 +46,8 @@ pipeline {
             steps {
              withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
               sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-              sh 'docker tag cart-image pranitdockerhub/cicd:latest'
-              sh 'docker push pranitdockerhub/cicd:latest'
+              sh 'docker tag cart-image pranitdockerhub/shoes-microservice:latest'
+              sh 'docker push pranitdockerhub/shoes-microservice:latest'
               sh 'docker logout'
               }
 
@@ -55,7 +55,7 @@ pipeline {
         }
         stage('Deployment') {
             steps {
-               sh 'docker run -itd --name shoes-container pranitdockerhub/cicd:latest /bin/bash'
+               sh 'docker run -itd --name shoes-container pranitdockerhub/shoes-microservice:latest /bin/bash'
             }
         }
     } 
