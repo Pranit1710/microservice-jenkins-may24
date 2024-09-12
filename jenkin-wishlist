@@ -1,7 +1,10 @@
 
 pipeline {
-    agent any
-
+    agent any{
+         docker {
+            image 'python:3'
+        }
+    }
      environment{
         DOCKER_USER='pranitdockerhub'
     }
@@ -16,8 +19,6 @@ pipeline {
 
         stage('Install Python and Flask') {
             steps {
-                sh 'install python3-pip'
-                sh 'python index.py'  
                 sh 'pip install Flask'
                 }
             }
