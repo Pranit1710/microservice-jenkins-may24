@@ -29,7 +29,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t wishlist-image .'
+                dir('/var/lib/jenkins/workspace/wishlist-microservice/wishlist-microservice-python')
+                {
+                    sh 'docker build -t wishlist-image .'
+                }    
             }
         }
         
