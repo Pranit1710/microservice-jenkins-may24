@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-               checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '530aad2c-250b-4f94-b53f-42bc4b74c93c', url: 'https://github.com/Pranit1710/simple-java-maven-app-may-24.git']])
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '530aad2c-250b-4f94-b53f-42bc4b74c93c', url: 'https://github.com/Pranit1710/microservice-jenkins-may24.git']])
             }
         }
         stage('Install dependencies') {
@@ -37,7 +37,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t eureka .'
+                sh 'docker build -t eureka-image .'
             }
         } 
         
@@ -45,8 +45,8 @@ pipeline {
             steps {
              withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
               sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-              sh 'docker tag cart-image pranitdockerhub/cicd:latest'
-              sh 'docker push pranitdockerhub/cicd:latest'
+              sh 'docker tag cart-image pranitdockerhub/cart-microservice:latest'
+              sh 'docker push pranitdockerhub/cart-microservice:latest'
               sh 'docker logout'
               }
 
@@ -54,7 +54,7 @@ pipeline {
         }
         stage('Deployment') {
             steps {
-               sh 'docker run -itd --name eureka-container pranitdockerhub/cicd:latest /bin/bash'
+               sh 'docker run -itd --name eureka-container pranitdockerhub/cart-microservice:latest /bin/bash'
             }
         }
     } 
