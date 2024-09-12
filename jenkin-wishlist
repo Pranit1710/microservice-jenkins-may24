@@ -19,7 +19,7 @@ pipeline {
 
         stage('Install Python and Flask') {
             steps {
-                sh 'pip install --user Flask'
+                sh 'pip3 install --user Flask'
                 }
             }
 
