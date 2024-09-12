@@ -19,10 +19,7 @@ pipeline {
 
         stage('Build') {
             steps {
-       //      dir('/var/lib/jenkins/workspace/Cart-Microservice/package.json/')
-               { 
                  sh 'npm install'
-               }
             }
         }
 
