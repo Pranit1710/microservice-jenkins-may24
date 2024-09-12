@@ -1,7 +1,19 @@
 
 pipeline {
     agent any
+
+     environment{
+        DOCKER_USER='pranitdockerhub'
+    }
+
     stages {
+
+         stage('Git Checkout') {
+            steps {
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '530aad2c-250b-4f94-b53f-42bc4b74c93c', url: 'https://github.com/Pranit1710/microservice-jenkins-may24.git']])
+            }
+        }
+
         stage('Install Python and Flask') {
             steps {
                 script {
@@ -28,5 +40,41 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t wishlist-image cart-microservice-nodejs/'
+            }
+        }
+        
+        stage('DockerHub login & Image push to dockerhub') {
+            steps {
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+                    sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
+                    sh 'docker tag cart-image pranitdockerhub/wishlist-microservice:latest'
+                    sh 'docker push pranitdockerhub/wishlist-microservice:latest'
+                    sh 'docker logout'
+                }
+            }
+        }
+
+        stage('Deployment') {
+            steps {
+                sh 'docker run -itd --name wishlist-container pranitdockerhub/wishlist-microservice:latest /bin/bash'
+            }
+        }
+
     }
+
+    post { 
+
+        failure { 
+            echo 'Failure !'
+            mail bcc: '', body: 'job \'${env.JOB_URL}\'', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME}"', to: 'ptaksande17@gmail.com'
+        }
+        success { 
+            echo ' success!'
+        }
+    }
+
 }
