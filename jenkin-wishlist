@@ -17,7 +17,7 @@ pipeline {
         stage('Install Python and Flask') {
             steps {
                 sh 'install python3-pip'
-              //  sh 'python index.py'  
+                sh 'python index.py'  
                 sh 'pip install Flask'
                 }
             }
