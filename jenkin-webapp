@@ -28,7 +28,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir(/var/lib/jenkins/workspace/ui-web-app/ui-web-app-reactjs)
+                dir('/var/lib/jenkins/workspace/ui-web-app/ui-web-app-reactjs')
                 {
                     sh 'docker build -t webapp-image .'
                 }
