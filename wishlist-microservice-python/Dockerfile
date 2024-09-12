@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7
 COPY . .
 RUN pip install flask flask_cors
 EXPOSE 1003
