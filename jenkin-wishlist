@@ -28,8 +28,8 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                dir('/usr/bin/docker')        
-                sh 'docker build --privileged -t wishlist-image .'
+                sh 'docker build -t -v /var/run/docker.sock:/var/run/docker.sock \
+              -v $(which docker):/usr/bin/docker wishlist-image .'
             }
         }
         
