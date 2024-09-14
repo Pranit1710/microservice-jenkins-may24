@@ -5,6 +5,9 @@ pipeline {
             image 'python:3.7'
         }
     }
+    tools{
+       docker = "docker"
+    }
      environment{
         DOCKER_USER='pranitdockerhub'
     }
@@ -28,8 +31,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                def dockerHome = tool 'docker'
-                sh '${dockerHome}/bin/docker build -t wishlist-image .'
+                sh 'docker build -t wishlist-image .'
             }
         }
         
