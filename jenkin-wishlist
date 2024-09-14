@@ -18,15 +18,16 @@ pipeline {
             }
         }
 
-        stage('Install Python and Flask'){
-            steps {
-                        sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install Flask
-                        '''
-                 }            
-        }
+ //       stage('Install Python and Flask'){
+//            steps {
+ //                sh '''
+//                  python3 -m venv venv
+//                . venv/bin/activate
+//                  pip install Flask
+  //                '''
+      //           }            
+    //    }
+    
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t wishlist-image .'
