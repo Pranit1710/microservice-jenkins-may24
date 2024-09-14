@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-               dir('/var/lib/jenkins/workspace/wishlist-micriservice/wishlist-microservice-python/')
+               git url: 'https://github.com/Pranit1710/microservice-jenkins-may24/edit/main/jenkin-wishlist'
                 {
                     sh 'docker build -t wishlist-image .'
                 }
