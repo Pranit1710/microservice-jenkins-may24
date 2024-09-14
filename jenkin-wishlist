@@ -28,11 +28,8 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-              // git url: '**/microservice-jenkins-may24/wishlist-microservice-python
-                sh 'docker build microservice-jenkins-may24/wishlist-microservice-python/Dockerfile -t wishlist-image'
-              //  {
-             //       sh 'docker build microservice-jenkins-may24/wishlist-microservice-python/Dockerfile -t wishlist-image'
-            //    }
+                def deckerHome = tool 'docker'
+                sh '${dockerHome}/bin/docker build -t wishlist-image .'
             }
         }
         
