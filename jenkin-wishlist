@@ -1,12 +1,8 @@
 
 pipeline {
-    agent {
-         docker {
-            image 'python:3.7'
-            reuseNode true
-        }
-    }
-     environment{
+    agent any
+
+    environment{
         DOCKER_USER='pranitdockerhub'
     }
 
@@ -18,11 +14,14 @@ pipeline {
             }
         }
 
- 
+
     
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t wishlist-image .'
+                dir('wishlist-microservice-python') {
+                    sh 'docker build -t wishlist-image-1 .'
+    
+                }
             }
         }
         
