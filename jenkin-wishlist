@@ -5,9 +5,6 @@ pipeline {
             image 'python:3.7'
         }
     }
-    tools{
-       docker = "docker"
-    }
      environment{
         DOCKER_USER='pranitdockerhub'
     }
