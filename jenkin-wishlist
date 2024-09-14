@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                def deckerHome = tool 'docker'
+                def dockerHome = tool 'docker'
                 sh '${dockerHome}/bin/docker build -t wishlist-image .'
             }
         }
